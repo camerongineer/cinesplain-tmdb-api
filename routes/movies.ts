@@ -22,8 +22,8 @@ moviesListRouter.get("/movies/search", async (request: Request, response: Respon
     }
 });
 
-moviesListRouter.get("/movies/now_playing/:page?", async (request: Request, response: Response) => {
-    const page = request.params.page ?? 1;
+moviesListRouter.get("/movies/now_playing", async (request: Request, response: Response) => {
+    const page = request.query.page ?? 1;
     try {
         const res = await axios.get(`${BASE_URL}movie/now_playing?language=en-US&page=${page}`, {
             headers: {
@@ -36,8 +36,8 @@ moviesListRouter.get("/movies/now_playing/:page?", async (request: Request, resp
     }
 });
 
-moviesListRouter.get("/movies/upcoming/:page?", async (request: Request, response: Response) => {
-    const page = request.params.page ?? 1;
+moviesListRouter.get("/movies/upcoming", async (request: Request, response: Response) => {
+    const page = request.query.page ?? 1;
     try {
         const res = await axios.get(`${BASE_URL}discover/movie?sort_by=popularity.desc&page=${page}&include_adult=false&language=en&primary_release_date.gte=${getFormattedDate(new Date())}`, {
             headers: {
@@ -50,8 +50,8 @@ moviesListRouter.get("/movies/upcoming/:page?", async (request: Request, respons
     }
 });
 
-moviesListRouter.get("/movies/classics/:page?", async (request: Request, response: Response) => {
-    const page = request.params.page ?? 1;
+moviesListRouter.get("/movies/classics", async (request: Request, response: Response) => {
+    const page = request.query.page ?? 1;
     try {
         const res = await axios.get(`${BASE_URL}discover/movie?include_adult=false&language=en-US&with_original_language=en&page=${page}&sort_by=vote_average.desc&without_genres=99,10755&vote_count.gte=1000`, {
             headers: {
@@ -64,8 +64,8 @@ moviesListRouter.get("/movies/classics/:page?", async (request: Request, respons
     }
 });
 
-moviesListRouter.get("/movies/most_loved/:page?", async (request: Request, response: Response) => {
-    const page = request.params.page ?? 1;
+moviesListRouter.get("/movies/most_loved", async (request: Request, response: Response) => {
+    const page = request.query.page ?? 1;
     try {
         const res = await axios.get(`${BASE_URL}discover/movie?include_adult=false&language=en-US&with_original_language=en&page=${page}&sort_by=vote_average.desc&primary_release_date.gte=${sixMonthsAgoFormatted}&without_genres=99,10755&vote_count.gte=20`, {
             headers: {
@@ -79,8 +79,8 @@ moviesListRouter.get("/movies/most_loved/:page?", async (request: Request, respo
 });
 
 
-moviesListRouter.get("/movies/most_hated/:page?", async (request: Request, response: Response) => {
-    const page = request.params.page ?? 1;
+moviesListRouter.get("/movies/most_hated", async (request: Request, response: Response) => {
+    const page = request.query.page ?? 1;
     try {
         const res = await axios.get(`${BASE_URL}discover/movie?include_adult=false&language=en-US&with_original_language=en&page=${page}&sort_by=vote_average.asc&primary_release_date.gte=${sixMonthsAgoFormatted}&without_genres=99,10755&vote_count.gte=20`, {
             headers: {
