@@ -4,9 +4,9 @@ import { handleRoute } from "./common";
 const movieRouter = express.Router();
 
 movieRouter.get("/movie/:id",
-    (request, response) => {
+    async (request, response) => {
         const movieId = request.params.id;
-        handleRoute(
+        await handleRoute(
             request,
             response,
             `movie/${movieId}`,

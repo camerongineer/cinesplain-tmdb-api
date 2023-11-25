@@ -7,8 +7,8 @@ const moviesListRouter = express.Router();
 const sixMonthsAgoFormatted = getFormattedDate(getSubtractedDate(new Date(), 0, 6, 0));
 
 moviesListRouter.get("/movies/search",
-    (request, response) => {
-        handleRoute(
+    async (request, response) => {
+        await handleRoute(
             request,
             response,
             "search/movie",
@@ -20,8 +20,8 @@ moviesListRouter.get("/movies/search",
     });
 
 moviesListRouter.get("/movies/now_playing",
-    (request, response) => {
-        handleRoute(
+    async (request, response) => {
+        await handleRoute(
             request,
             response,
             "movie/now_playing",
@@ -32,8 +32,8 @@ moviesListRouter.get("/movies/now_playing",
             });
     });
 
-moviesListRouter.get("/movies/upcoming", (request, response) => {
-    handleRoute(
+moviesListRouter.get("/movies/upcoming", async (request, response) => {
+    await handleRoute(
         request,
         response,
         "discover/movie",
@@ -46,8 +46,8 @@ moviesListRouter.get("/movies/upcoming", (request, response) => {
 });
 
 moviesListRouter.get("/movies/classics",
-    (request, response) => {
-        handleRoute(
+    async (request, response) => {
+        await handleRoute(
             request,
             response,
             "discover/movie",
@@ -61,8 +61,8 @@ moviesListRouter.get("/movies/classics",
     });
 
 moviesListRouter.get("/movies/most_loved",
-    (request, response) => {
-        handleRoute(request,
+    async (request, response) => {
+        await handleRoute(request,
             response,
             "discover/movie",
             {
@@ -77,8 +77,8 @@ moviesListRouter.get("/movies/most_loved",
     });
 
 moviesListRouter.get("/movies/most_hated",
-    (request, response) => {
-        handleRoute(
+    async (request, response) => {
+        await handleRoute(
             request,
             response,
             "discover/movie",
