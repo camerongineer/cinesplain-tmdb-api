@@ -25,7 +25,7 @@ moviesListRouter.get("/movies/discover",
         await handleRoute(
             request,
             response,
-            "search/movie",
+            "discover/movie",
             {
                 include_adult: false,
                 language: "en-US",
