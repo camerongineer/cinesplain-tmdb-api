@@ -6,7 +6,7 @@ import movieListRoutes from "./routes/movies";
 dotenv.config();
 
 export const BASE_URL = "https://api.themoviedb.org/3/";
-export const PORT = process.env.PORT || 5000;
+export const PORT = process.env.PORT || 5002;
 
 const index = express();
 index.use(express.json());
