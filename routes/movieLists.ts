@@ -13,8 +13,22 @@ moviesListRouter.get("/movies/search",
             response,
             "search/movie",
             {
+                include_adult: false,
                 language: "en-US",
                 query: request.query.query,
+                sort_by: "popularity.desc"
+            });
+    });
+
+moviesListRouter.get("/movies/discover",
+    async (request, response) => {
+        await handleRoute(
+            request,
+            response,
+            "search/movie",
+            {
+                include_adult: false,
+                language: "en-US",
                 sort_by: "popularity.desc"
             });
     });
@@ -54,6 +68,7 @@ moviesListRouter.get("/movies/classics",
             {
                 include_adult: false,
                 language: "en-US",
+                origin_language: "en",
                 sort_by: "vote_average.desc",
                 "vote_count.gte": 1000,
                 without_genres: "99,10755"
