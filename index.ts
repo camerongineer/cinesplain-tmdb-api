@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import movieListRoutes from "./routes/movies";
+import movieListRoutes from "./routes/movieLists";
+import movieRoutes from "./routes/movie";
 
 dotenv.config();
 
@@ -23,3 +24,4 @@ index.get("/status", (request: Request, response: Response) => {
 });
 
 index.use(movieListRoutes);
+index.use(movieRoutes);

@@ -7,10 +7,6 @@ export const handleRoute = async (request: Request, response: Response, endpoint
         const res = await axios.get(`${BASE_URL}${endpoint}`, {
             params: {
                 ...params,
-                page: request.query.page ?? 1,
-                include_adult: false,
-                language: "en-US",
-                with_original_language: "en"
             },
             headers: {
                 Authorization: `Bearer ${process.env.TMDB_API_KEY}`
