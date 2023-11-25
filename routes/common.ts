@@ -6,6 +6,9 @@ export const handleRoute = async (request: Request, response: Response, endpoint
     try {
         const res = await axios.get(`${BASE_URL}${endpoint}`, {
             params: {
+                include_adult: false,
+                language: "en-US",
+                with_original_language: "en",
                 ...params,
             },
             headers: {
