@@ -16,4 +16,16 @@ movieRouter.get("/movie/:id",
             });
     });
 
+movieRouter.get("/movie/:id/credits",
+    async (request, response) => {
+        const movieId = request.params.id;
+        await handleRoute(
+            request,
+            response,
+            `movie/${movieId}/credits`,
+            {
+                language: "en"
+            });
+    });
+
 export default movieRouter;
