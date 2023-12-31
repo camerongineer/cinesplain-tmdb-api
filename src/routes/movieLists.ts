@@ -4,10 +4,12 @@ import { getSubtractedDate } from "../utils/timeUtils";
 import { getFormattedDate } from "../utils/formatUtils";
 import { handleRoute } from "./common";
 import { BASE_URL } from "../index";
+import Movie from "../types/movie";
 
 const moviesListRouter = express.Router();
 const threeMonthsAgoFormatted = getFormattedDate(getSubtractedDate(new Date(), 0, 3, 0));
 const threeMonthsFromNowFormatted = getFormattedDate(getSubtractedDate(new Date(), 0, -3, 0));
+
 
 moviesListRouter.get("/movies/search",
     async (request, response) => {
@@ -46,9 +48,9 @@ moviesListRouter.get("/movies/top_200_titles",
                         Authorization: `Bearer ${process.env.TMDB_API_KEY}`
                     }
                 });
-                if (res !== null) {
+                if (res) {
                     const popularMoviesArray = res.data["results"];
-                    popularMoviesArray.forEach((resObj: any) => popularMovieTitles.push(resObj["title"]));
+                    popularMoviesArray.forEach((resObj: Movie) => popularMovieTitles.push(resObj["title"]));
                 }
             }
             response.send(popularMovieTitles);

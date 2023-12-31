@@ -2,7 +2,7 @@ import express from "express";
 import { handleRoute } from "./common";
 import axios from "axios";
 import { BASE_URL } from "../index";
-import Video from "../interfaces/video";
+import Video from "../types/video";
 
 const movieRouter = express.Router();
 
