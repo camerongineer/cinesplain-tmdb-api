@@ -61,4 +61,29 @@ movieRouter.get("/movie/:id/trailers",
         }
     });
 
+movieRouter.get("/movie/:id/recommendations",
+    async (request, response) => {
+        const movieId = request.params.id;
+        await handleRoute(
+            request,
+            response,
+            `movie/${movieId}/recommendations`,
+            {
+                language: "en"
+            });
+    });
+
+
+movieRouter.get("/movie/:id/similar",
+    async (request, response) => {
+        const movieId = request.params.id;
+        await handleRoute(
+            request,
+            response,
+            `movie/${movieId}/similar`,
+            {
+                language: "en"
+            });
+    });
+
 export default movieRouter;
