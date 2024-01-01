@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import movieListRoutes from "./routes/movieLists";
 import movieRoutes from "./routes/movie";
+import peopleRouter from "./routes/people";
 
 dotenv.config();
 
@@ -25,3 +26,4 @@ index.get("/status", (request: Request, response: Response) => {
 
 index.use(movieListRoutes);
 index.use(movieRoutes);
+index.use(peopleRouter);
