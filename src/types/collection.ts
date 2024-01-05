@@ -1,8 +1,24 @@
 type Collection = {
-    "id": number,
-    "name": string,
-    "poster_path": string,
-    "backdrop_path": string
-}
+    id: number;
+    name: string;
+    posterPath: string;
+    backdropPath: string;
+};
 
-export default Collection;
+type CollectionType = {
+    id: number;
+    name: string;
+    poster_path: string;
+    backdrop_path: string;
+};
+
+const convertCollection = (collectionType: CollectionType): Collection => {
+    return {
+        id: collectionType.id,
+        name: collectionType.name,
+        posterPath: collectionType.poster_path,
+        backdropPath: collectionType.backdrop_path,
+    };
+};
+
+export { Collection, CollectionType, convertCollection };
