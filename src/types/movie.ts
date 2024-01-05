@@ -9,12 +9,12 @@ import { Video, VideoType, convertVideo } from "./video";
 type Movie = {
     adult: boolean;
     backdropPath: string;
-    belongsToCollection: Collection[] | null;
+    belongsToCollection: Collection | null;
     budget: number | null;
     genres: Genre[] | null;
     genreIds: number[] | null;
     homepage: string | null;
-    id: number;
+    id: string;
     images: {
         backdrops: Image[] | null,
         logos: Image[] | null,
@@ -47,7 +47,7 @@ type Movie = {
 type MovieType = {
     adult: boolean
     backdrop_path: string
-    belongs_to_collection?: CollectionType[],
+    belongs_to_collection?: CollectionType,
     budget?: number,
     genres?: Genre[]
     genre_ids?: number[],
@@ -86,12 +86,12 @@ const convertMovie = (movie: MovieType): Movie => {
     return {
         adult: movie.adult,
         backdropPath: movie.backdrop_path,
-        belongsToCollection: movie.belongs_to_collection?.map(convertCollection) ?? null,
+        belongsToCollection: convertCollection(movie.belongs_to_collection),
         budget: movie.budget ?? null,
         genres: movie.genres ?? null,
         genreIds: movie.genre_ids ?? null,
         homepage: movie.homepage ?? null,
-        id: movie.id,
+        id: movie.id.toString(),
         images: {
             backdrops: movie.images?.backdrops.map(convertImage) ?? null,
             logos: movie.images?.logos.map(convertImage) ?? null,

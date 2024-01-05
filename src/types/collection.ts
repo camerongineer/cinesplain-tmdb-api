@@ -12,12 +12,13 @@ type CollectionType = {
     backdrop_path: string;
 };
 
-const convertCollection = (collectionType: CollectionType): Collection => {
+const convertCollection = (collectionType: CollectionType | undefined): Collection | null => {
+    if (!collectionType) return null;
     return {
         id: collectionType.id,
         name: collectionType.name,
         posterPath: collectionType.poster_path,
-        backdropPath: collectionType.backdrop_path,
+        backdropPath: collectionType.backdrop_path
     };
 };
 
