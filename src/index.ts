@@ -10,8 +10,12 @@ dotenv.config();
 export const BASE_URL = "https://api.themoviedb.org/3/";
 export const PORT = process.env.PORT || 5000;
 
-const allowedOriginsString = process.env.ALLOWED_ORIGINS || "";
-const allowedOrigins = allowedOriginsString.split("~~").map(origin => origin.trim());
+const allowedOrigins = [
+    process.env.ALLOWED_ORIGIN_1 ?? "",
+    process.env.ALLOWED_ORIGIN_2 ?? "",
+    process.env.ALLOWED_ORIGIN_3 ?? "",
+    process.env.ALLOWED_ORIGIN_4 ?? "",
+]
 
 const corsOptions: cors.CorsOptions = {
     origin: allowedOrigins,
