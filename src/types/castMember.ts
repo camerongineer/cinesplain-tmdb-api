@@ -8,7 +8,7 @@ type CastMember = {
     overview: string;
     popularity: number;
     posterPath: string | null;
-    releaseDate: string;
+    releaseDate: string | null;
     title: string;
     video: boolean;
     voteAverage: number;
@@ -49,7 +49,7 @@ const convertCastMember = (castMemberType: CastMemberType): CastMember => {
         overview: castMemberType.overview,
         popularity: castMemberType.popularity,
         posterPath: castMemberType.poster_path ?? null,
-        releaseDate: castMemberType.release_date,
+        releaseDate: castMemberType.release_date || null,
         title: castMemberType.title,
         video: castMemberType.video,
         voteAverage: castMemberType.vote_average,
