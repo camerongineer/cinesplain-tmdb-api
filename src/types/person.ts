@@ -6,7 +6,7 @@ type Person = {
     adult: boolean;
     alsoKnownAs: string[];
     biography: string;
-    birthday: string;
+    birthday: string | null;
     deathday: string | null;
     gender: number;
     homepage: string | null;
@@ -30,7 +30,7 @@ type PersonType = {
     adult: boolean;
     also_known_as: string[];
     biography: string;
-    birthday: string;
+    birthday: string | null;
     deathday: string | null;
     gender: number;
     homepage: string | null;
@@ -55,7 +55,7 @@ const convertPerson = (personType: PersonType): Person => {
         adult: personType.adult,
         alsoKnownAs: personType.also_known_as,
         biography: personType.biography,
-        birthday: personType.birthday,
+        birthday: personType.birthday ?? null,
         deathday: personType.deathday ?? null,
         gender: personType.gender,
         homepage: personType.homepage ?? null,
