@@ -10,22 +10,9 @@ dotenv.config();
 export const BASE_URL = "https://api.themoviedb.org/3/";
 export const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = [
-    process.env.ALLOWED_ORIGIN_1 ?? "",
-    process.env.ALLOWED_ORIGIN_2 ?? "",
-    process.env.ALLOWED_ORIGIN_3 ?? "",
-    process.env.ALLOWED_ORIGIN_4 ?? "",
-]
-
-const corsOptions: cors.CorsOptions = {
-    origin: allowedOrigins,
-    methods: "GET",
-    optionsSuccessStatus: 204
-};
-
 const index = express();
 index.use(express.json());
-index.use(cors(corsOptions));
+index.use(cors());
 
 index.listen(PORT, () => {
     console.log("Server Listening on PORT:", PORT);
