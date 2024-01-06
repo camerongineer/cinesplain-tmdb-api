@@ -8,9 +8,10 @@ import peopleRouter from "./routes/people";
 dotenv.config();
 
 export const BASE_URL = "https://api.themoviedb.org/3/";
-export const PORT = process.env.PORT || 5002;
+export const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split("||") || [];
+const allowedOriginsString = process.env.ALLOWED_ORIGINS || "";
+const allowedOrigins = allowedOriginsString.split("~~").map(origin => origin.trim());
 
 const corsOptions: cors.CorsOptions = {
     origin: allowedOrigins,
