@@ -24,12 +24,12 @@ type Movie = {
     mediaType: string;
     originalLanguage: string;
     originalTitle: string;
-    overview: string;
+    overview: string | null;
     popularity: number;
     posterPath: string | null;
     productionCompanies: ProductionCompany[] | null;
     productionCountries: ProductionCountry[] | null;
-    releaseDate: string;
+    releaseDate: string | null;
     revenue: number | null;
     runtime: number | null;
     spokenLanguages: SpokenLanguage[] | null;
@@ -87,7 +87,7 @@ const convertMovie = (movie: MovieType): Movie => {
         adult: movie.adult,
         backdropPath: movie.backdrop_path,
         belongsToCollection: convertCollection(movie.belongs_to_collection),
-        budget: movie.budget ?? null,
+        budget: movie.budget || null,
         genres: movie.genres ?? null,
         genreIds: movie.genre_ids ?? null,
         homepage: movie.homepage ?? null,
@@ -101,14 +101,14 @@ const convertMovie = (movie: MovieType): Movie => {
         mediaType: movie.media_type ?? "movie",
         originalLanguage: movie.original_language,
         originalTitle: movie.original_title,
-        overview: movie.overview,
+        overview: movie.overview || null,
         popularity: movie.popularity,
         posterPath: movie.poster_path ?? null,
         productionCompanies: movie.production_companies?.map(convertProductionCompany) ?? null,
         productionCountries: movie.production_countries?.map(convertProductionCountry) ?? null,
-        releaseDate: movie.release_date,
-        revenue: movie.revenue ?? null,
-        runtime: movie.runtime ?? null,
+        releaseDate: movie.release_date || null,
+        revenue: movie.revenue || null,
+        runtime: movie.runtime || null,
         spokenLanguages: movie.spoken_languages?.map(convertSpokenLanguage) ?? null,
         status: movie.status || null,
         tagline: movie.tagline || null,
