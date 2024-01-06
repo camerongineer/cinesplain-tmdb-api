@@ -14,7 +14,7 @@
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/movie/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "https://cinesplain.com" },
