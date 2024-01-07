@@ -1,9 +1,7 @@
 import express from "express";
-import axios from "axios";
 import { getSubtractedDate } from "../utils/timeUtils";
 import { getFormattedDate } from "../utils/formatUtils";
 import { getTMDBResponse } from "./common";
-import { BASE_URL } from "../index";
 import { convertMovie, MovieType } from "../types/movie";
 
 const moviesListRouter = express.Router();
@@ -57,39 +55,6 @@ moviesListRouter.get("/movies/discover",
             response.status(404).send({
                 code: "ERROR_DISCOVER_MOVIES_FETCH",
                 message: `Error fetching 'discover' movies"`
-            });
-        }
-    });
-
-moviesListRouter.get("/movies/top_200_titles",
-    async (request, response) => {
-        try {
-            const popularMovieTitles: string[] = [];
-            for (let page = 1; page <= 10; page++) {
-                const res = await axios.get(`${BASE_URL}discover/movie`, {
-                    params: {
-                        page: page,
-                        sort_by: "popularity.desc"
-                    },
-                    headers: {
-                        Authorization: `Bearer ${process.env.TMDB_API_KEY}`
-                    }
-                });
-                if (res) {
-                    const popularMoviesArray = res.data["results"];
-                    popularMoviesArray.forEach((resObj: MovieType) => popularMovieTitles.push(resObj["title"]));
-                }
-            }
-            response.send({
-                code: "SUCCESS",
-                message: "Successfully fetched 'top 200' movie titles",
-                data: { results: popularMovieTitles }
-            });
-        } catch (error) {
-            console.error(error)
-            response.status(404).send({
-                code: "ERROR_TOP_200_MOVIE_TITLES_FETCH",
-                message: `Error fetching 'top 200' movie titles"`
             });
         }
     });
