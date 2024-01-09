@@ -26,7 +26,7 @@ moviesListRouter.get("/movies/search",
                 data: { ...res.data, results: movieTypes.map(convertMovie) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_MOVIES_SEARCH_FETCH",
                 message: `Error finding movies with query "${request.query.query}"`
@@ -51,7 +51,7 @@ moviesListRouter.get("/movies/discover",
                 data: { ...res.data, results: movieTypes.map(convertMovie) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_DISCOVER_MOVIES_FETCH",
                 message: `Error fetching 'discover' movies"`
@@ -76,7 +76,7 @@ moviesListRouter.get("/movies/now_playing",
                 data: { ...res.data, results: movieTypes.map(convertMovie) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_NOW_PLAYING_MOVIES_FETCH",
                 message: `Error fetching 'now playing' movies"`
@@ -103,7 +103,7 @@ moviesListRouter.get("/movies/upcoming",
                 data: { ...res.data, results: movieTypes.map(convertMovie) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_UPCOMING_MOVIES_FETCH",
                 message: `Error fetching 'upcoming' movies"`
@@ -130,7 +130,7 @@ moviesListRouter.get("/movies/classics",
                 data: { ...res.data, results: movieTypes.map(convertMovie) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_CLASSIC_MOVIES_FETCH",
                 message: `Error fetching 'classic' movies"`
@@ -158,7 +158,7 @@ moviesListRouter.get("/movies/most_loved",
                 data: { ...res.data, results: movieTypes.map(convertMovie) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_MOST_LOVED_MOVIES_FETCH",
                 message: `Error fetching 'most loved' movies"`
@@ -186,10 +186,84 @@ moviesListRouter.get("/movies/most_hated",
                 data: { ...res.data, results: movieTypes.map(convertMovie) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_MOST_HATED_MOVIES_FETCH",
                 message: `Error fetching 'most hated' movies"`
+            });
+        }
+    });
+
+moviesListRouter.get("/movies/home_page_lists",
+    async (request, response) => {
+        try {
+            const nowPlayingMoviesRes = await getTMDBResponse(
+                request,
+                response,
+                "movie/now_playing",
+                {
+                    sort_by: "popularity.desc"
+                });
+            const upcomingMoviesRes = await getTMDBResponse(
+                request,
+                response,
+                "discover/movie",
+                {
+                    "primary_release_date.gte": getFormattedDate(new Date()),
+                    "primary_release_date.lte": threeMonthsFromNowFormatted,
+                    sort_by: "popularity.desc"
+                });
+            const lovedMoviesRes = await getTMDBResponse(
+                request,
+                response,
+                "discover/movie",
+                {
+                    "primary_release_date.gte": threeMonthsAgoFormatted,
+                    sort_by: "vote_average.desc",
+                    "vote_count.gte": 20,
+                    without_genres: "99,10755"
+                });
+            const hatedMoviesRes = await getTMDBResponse(
+                request,
+                response,
+                "discover/movie",
+                {
+                    "primary_release_date.gte": threeMonthsAgoFormatted,
+                    sort_by: "vote_average.asc",
+                    "vote_count.gte": 20,
+                    without_genres: "99,10755"
+                });
+            const classicMoviesRes = await getTMDBResponse(
+                request,
+                response,
+                "discover/movie",
+                {
+                    sort_by: "vote_average.desc",
+                    "vote_count.gte": 1000,
+                    without_genres: "99,10755"
+                });
+            const nowPlayingMovieTypes: MovieType[] = nowPlayingMoviesRes.data.results;
+            const upcomingMovieTypes: MovieType[] = upcomingMoviesRes.data.results;
+            const lovedMovieTypes: MovieType[] = lovedMoviesRes.data.results;
+            const hatedMovieTypes: MovieType[] = hatedMoviesRes.data.results;
+            const classicMovieTypes: MovieType[] = classicMoviesRes.data.results;
+            const data = {
+                recentMovies: nowPlayingMovieTypes.map(convertMovie),
+                upcomingMovies: upcomingMovieTypes.map(convertMovie),
+                lovedMovies: lovedMovieTypes.map(convertMovie),
+                hatedMovies: hatedMovieTypes.map(convertMovie),
+                classicMovies: classicMovieTypes.map(convertMovie)
+            };
+            response.send({
+                code: "SUCCESS",
+                message: "Successfully fetched home page lists",
+                data: { results: data }
+            });
+        } catch (error) {
+            console.error(error);
+            response.status(404).send({
+                code: "ERROR_HOME_PAGE_LISTS_FETCH",
+                message: "Error fetching home page lists"
             });
         }
     });
