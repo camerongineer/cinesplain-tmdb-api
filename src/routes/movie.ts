@@ -1,6 +1,6 @@
 import express from "express";
-import { getTMDBResponse } from "./common";
-import { MovieType, convertMovie } from "../types/movie";
+import { getOMDBResponse, getTMDBResponse } from "./common";
+import { MovieType, convertMovie, OmdbMovieInfo } from "../types/movie";
 import { convertCredit, CreditsType } from "../types/credits";
 import { convertVideo, Video, VideoType } from "../types/video";
 import { BASE_URL } from "../index";
@@ -21,13 +21,16 @@ movieRouter.get("/movie/:id",
                     language: "en"
                 });
             const movieType: MovieType = res.data;
+            const imdbId = movieType.imdb_id;
+            const omdbRes = await getOMDBResponse(request, response, imdbId);
+            const ombdMovieInfo: OmdbMovieInfo = omdbRes.data;
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched movie",
-                data: { results: convertMovie(movieType) }
+                data: { results: convertMovie(movieType, ombdMovieInfo) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_MOVIE_FETCH",
                 message: `Error fetching movie id: ${movieId}`
@@ -59,7 +62,7 @@ movieRouter.get("/movie/:id/credits",
                 }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_MOVIE_CREDITS_FETCH",
                 message: `Error fetching credits with movie id: ${movieId}`
@@ -98,7 +101,7 @@ movieRouter.get("/movie/:id/trailers",
                 data: { results: trailers }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_MOVIE_TRAILERS_FETCH",
                 message: `Error fetching movie trailers with movie id: ${movieId}`
@@ -121,10 +124,10 @@ movieRouter.get("/movie/:id/recommendations",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched movie recommendations",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_MOVIE_RECOMMENDATIONS_FETCH",
                 message: `Error fetching movie recommendations with movie id: ${movieId}`
@@ -147,10 +150,10 @@ movieRouter.get("/movie/:id/similar",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched similar movies",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
             response.status(404).send({
                 code: "ERROR_SIMILAR_MOVIES_FETCH",
                 message: `Error fetching similar movies with movie id: ${movieId}`
