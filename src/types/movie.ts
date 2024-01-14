@@ -7,10 +7,14 @@ import { SpokenLanguage, SpokenLanguageType, convertSpokenLanguage } from "./spo
 import { Video, VideoType, convertVideo } from "./video";
 
 type Movie = {
+    actors: string | null;
     adult: boolean;
+    awards: string | null;
     backdropPath: string;
     belongsToCollection: Collection | null;
+    boxOffice: string | null;
     budget: number | null;
+    director: string | null;
     genres: Genre[] | null;
     genreIds: number[] | null;
     homepage: string | null;
@@ -21,6 +25,8 @@ type Movie = {
         posters: Image[] | null
     }
     imdbId: string | null;
+    imdbRating: number | null;
+    metaScore: number | null;
     mediaType: string;
     originalLanguage: string;
     originalTitle: string;
@@ -29,8 +35,10 @@ type Movie = {
     posterPath: string | null;
     productionCompanies: ProductionCompany[] | null;
     productionCountries: ProductionCountry[] | null;
+    rated: string | null;
     releaseDate: string | null;
     revenue: number | null;
+    rottenTomatoesScore: number | null;
     runtime: number | null;
     spokenLanguages: SpokenLanguage[] | null;
     status: string | null;
@@ -40,8 +48,9 @@ type Movie = {
     videos: {
         results: Video[] | null
     };
-    voteAverage: number;
+    voteAverage: number | null;
     voteCount: number;
+    writer: string | null;
 };
 
 type MovieType = {
@@ -82,12 +91,54 @@ type MovieType = {
     vote_count: number
 }
 
-const convertMovie = (movie: MovieType): Movie => {
+type OmdbMovieInfo = {
+    Title: string;
+    Year: string;
+    Rated: string;
+    Released: string;
+    Runtime: string;
+    Genre: string;
+    Director: string;
+    Writer: string;
+    Actors: string;
+    Plot: string;
+    Language: string;
+    Country: string;
+    Awards: string;
+    Poster: string;
+    Ratings: {
+        Source: string;
+        Value: string;
+    }[];
+    Metascore: string;
+    imdbRating: string;
+    imdbVotes: string;
+    imdbID: string;
+    Type: string;
+    DVD: string;
+    BoxOffice: string;
+    Production: string;
+    Website: string;
+    Response: string;
+};
+
+const convertMovie = (movie: MovieType, omdbInfo?: OmdbMovieInfo): Movie => {
+    let rottenTomatoesScore = null;
+    if (omdbInfo && omdbInfo.Ratings) {
+        let rating = omdbInfo.Ratings.find(rating => rating.Source === "Rotten Tomatoes");
+        if (rating) {
+            rottenTomatoesScore = Number(rating.Value.replace("%", ""));
+        }
+    }
     return {
+        actors: omdbInfo?.Actors && omdbInfo.Actors !== "N/A" ? omdbInfo.Actors : null,
         adult: movie.adult,
+        awards: omdbInfo?.Awards && omdbInfo.Awards !== "N/A" ? omdbInfo.Awards : null,
         backdropPath: movie.backdrop_path,
         belongsToCollection: convertCollection(movie.belongs_to_collection),
+        boxOffice: omdbInfo?.BoxOffice && omdbInfo.BoxOffice !== "N/A" ? omdbInfo.BoxOffice : null,
         budget: movie.budget || null,
+        director: omdbInfo?.Director && omdbInfo.Director !== "N/A" ? omdbInfo.Director : null,
         genres: movie.genres ?? null,
         genreIds: movie.genre_ids ?? null,
         homepage: movie.homepage ?? null,
@@ -98,6 +149,10 @@ const convertMovie = (movie: MovieType): Movie => {
             posters: movie.images?.posters.map(convertImage) ?? null
         },
         imdbId: movie.imdb_id ?? null,
+        imdbRating: omdbInfo?.imdbRating && omdbInfo.imdbRating !== "N/A"
+            ? Math.floor(Number(omdbInfo.imdbRating) * 10)
+            : null,
+        metaScore: omdbInfo?.Metascore && omdbInfo.Metascore !== "N/A" ? Number(omdbInfo.Metascore) : null,
         mediaType: movie.media_type ?? "movie",
         originalLanguage: movie.original_language,
         originalTitle: movie.original_title,
@@ -106,8 +161,10 @@ const convertMovie = (movie: MovieType): Movie => {
         posterPath: movie.poster_path ?? null,
         productionCompanies: movie.production_companies?.map(convertProductionCompany) ?? null,
         productionCountries: movie.production_countries?.map(convertProductionCountry) ?? null,
+        rated: omdbInfo?.Rated && omdbInfo.Rated !== "N/A" ? omdbInfo.Rated : null,
         releaseDate: movie.release_date || null,
         revenue: movie.revenue || null,
+        rottenTomatoesScore: rottenTomatoesScore,
         runtime: movie.runtime || null,
         spokenLanguages: movie.spoken_languages?.map(convertSpokenLanguage) ?? null,
         status: movie.status || null,
@@ -117,9 +174,10 @@ const convertMovie = (movie: MovieType): Movie => {
         videos: {
             results: movie.videos?.results.map(convertVideo) ?? null
         },
-        voteAverage: movie.vote_average,
-        voteCount: movie.vote_count
+        voteAverage: movie.vote_average > 0 ? Math.floor(movie.vote_average * 10) : null,
+        voteCount: movie.vote_count,
+        writer: omdbInfo?.Writer && omdbInfo.Writer !== "N/A" ? omdbInfo.Writer : null
     };
 };
 
-export { Movie, MovieType, convertMovie };
+export { Movie, MovieType, OmdbMovieInfo, convertMovie };
