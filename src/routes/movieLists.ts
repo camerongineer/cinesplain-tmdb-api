@@ -23,7 +23,7 @@ moviesListRouter.get("/movies/search",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched 'searched' movies",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
             console.error(error);
@@ -48,7 +48,7 @@ moviesListRouter.get("/movies/discover",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched 'discover' movies",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
             console.error(error);
@@ -73,7 +73,7 @@ moviesListRouter.get("/movies/now_playing",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched 'now playing' movies",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
             console.error(error);
@@ -100,7 +100,7 @@ moviesListRouter.get("/movies/upcoming",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched 'upcoming' movies",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
             console.error(error);
@@ -127,7 +127,7 @@ moviesListRouter.get("/movies/classics",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched 'classics' movies",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
             console.error(error);
@@ -155,7 +155,7 @@ moviesListRouter.get("/movies/most_loved",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched 'most loved' movies",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
             console.error(error);
@@ -183,7 +183,7 @@ moviesListRouter.get("/movies/most_hated",
             response.send({
                 code: "SUCCESS",
                 message: "Successfully fetched 'most hated' movies",
-                data: { ...res.data, results: movieTypes.map(convertMovie) }
+                data: { ...res.data, results: movieTypes.map(movie => convertMovie(movie)) }
             });
         } catch (error) {
             console.error(error);
@@ -248,11 +248,11 @@ moviesListRouter.get("/movies/home_page_lists",
             const hatedMovieTypes: MovieType[] = hatedMoviesRes.data.results;
             const classicMovieTypes: MovieType[] = classicMoviesRes.data.results;
             const data = {
-                recentMovies: nowPlayingMovieTypes.map(convertMovie),
-                upcomingMovies: upcomingMovieTypes.map(convertMovie),
-                lovedMovies: lovedMovieTypes.map(convertMovie),
-                hatedMovies: hatedMovieTypes.map(convertMovie),
-                classicMovies: classicMovieTypes.map(convertMovie)
+                recentMovies: nowPlayingMovieTypes.map(movie => convertMovie(movie)),
+                upcomingMovies: upcomingMovieTypes.map(movie => convertMovie(movie)),
+                lovedMovies: lovedMovieTypes.map(movie => convertMovie(movie)),
+                hatedMovies: hatedMovieTypes.map(movie => convertMovie(movie)),
+                classicMovies: classicMovieTypes.map(movie => convertMovie(movie))
             };
             response.send({
                 code: "SUCCESS",
