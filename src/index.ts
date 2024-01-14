@@ -8,6 +8,7 @@ import peopleRouter from "./routes/people";
 dotenv.config();
 
 export const BASE_URL = "https://api.themoviedb.org/3/";
+export const OMDB_BASE_URL = "https://www.omdbapi.com/";
 export const PORT = process.env.PORT || 5002;
 
 const index = express();
