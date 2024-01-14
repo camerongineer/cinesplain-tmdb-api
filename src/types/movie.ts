@@ -150,7 +150,7 @@ const convertMovie = (movie: MovieType, omdbInfo?: OmdbMovieInfo): Movie => {
         },
         imdbId: movie.imdb_id ?? null,
         imdbRating: omdbInfo?.imdbRating && omdbInfo.imdbRating !== "N/A"
-            ? Math.floor(Number(omdbInfo.imdbRating) * 10)
+            ? parseFloat(parseFloat(omdbInfo.imdbRating).toFixed(1))
             : null,
         metaScore: omdbInfo?.Metascore && omdbInfo.Metascore !== "N/A" ? Number(omdbInfo.Metascore) : null,
         mediaType: movie.media_type ?? "movie",
