@@ -13,7 +13,13 @@ export const PORT = process.env.PORT || 5002;
 
 const index = express();
 index.use(express.json());
-index.use(cors());
+
+const corsOptions = {
+    origin: "*",
+    optionsSuccessStatus: 200
+};
+index.use(cors(corsOptions));
+
 index.listen(PORT, () => {
     console.log("Server Listening on PORT:", PORT);
 });
